@@ -24,7 +24,7 @@ class AnimaticsMotorController:
     ##
     # __init__
     #
-    # Description: Constructor initializes the serial connection to the motor
+    # Description: Constructor initializes the serial connection to the motor.
     #
     # Parameters:
     #  motorPath: File path of the serial port
@@ -41,16 +41,14 @@ class AnimaticsMotorController:
     ##
     # write
     #
-    # Description: sends a command to the motors while ensuring
-    #   the command has a single trailing whitespace
+    # Description: Sends a command to the motors while ensuring the command has a single trailing whitespace.
     #
     # Parameters:
     #   command: the command to send to the motors
     #
-    #TODO: Priority Queue
+    #TODO: Priority Queue for proposed motor commands.
     def write(self, command):
         command = command.strip() + " "
-        # print command
         self.serialPort.write(command)
 
         # Don't do it this way. Otherwise we will forget this is happening
@@ -60,91 +58,100 @@ class AnimaticsMotorController:
     ##
     # driveLeft
     #
-    # Description: sets the velocity of the left wheels
+    # Description: Sets the velocity of the left motors to the specified value.
     #
     # Parameters:
     #   velocity: speed for the motors to go (Units Unknown)
     #
     def driveLeft(self, velocity):
 
-        # address the left wheels
+        # address the left motors
         self.write(self.leftAddress)
 
+        # Set the velocity of the addressed motors
         self.write("VT=" + str(velocity) + " ")
-        print "____"+"VT=" + str(velocity) + " "+"____"
         self.write("G ")
-
-        print "driving left"
 
     ##
     # driveRight
     #
-    # Description: sets the velocity of the right wheels
+    # Description: Sets the velocity of the right motors to the specified value.
     #
     # Parameters:
     #   velocity: speed for the motors to go (Units Unknown)
     #
     def driveRight(self, velocity):
 
-        # address the right wheels
+        # address the right motors
         self.write(self.rightAddress)
 
+        # Set the velocity of the addressed motors
         self.write("VT=" + str(velocity) + " ")
         self.write("G ")
-
-        print "driving right"
 
     ##
     # stopLeft
     #
-    # Description: stops the left wheels
+    # Description: Sends the stop command to the left motors.
     #
     # Parameters:
     #   None
     #
     def stopLeft(self):
 
-        # address the left wheels
+        # address the left motors
         self.write(self.leftAddress)
+
+        # Stop the addressed motors
         self.write("S ")
 
     ##
     # stopRight
     #
-    # Description: stops the left wheels
+    # Description: Sends the stop command to the right motors.
     #
     # Parameters:
     #   None
     #
     def stopRight(self):
 
-        # address the left wheels
+        # address the left motors
         self.write(self.rightAddress)
+
+        # Stop the addressed motors
         self.write("S ")
 
     ##
     # reset
     #
-    # Description: Resets the motors
+    # Description: Resets the motors.
+    #   Motors need resetting after they overdraw current. They will stop responding to drive commands and flash
+    #   a red LED until they are reset.
     #
     # Parameters:
     #   None
     #
     def reset(self):
+        # Address all motors
         self.write(self.allAddress)
+
+        # reset addressed motors
         self.write("ZS ")
 
     ##
     # close
     #
-    # Description: Stops the motors and closes the serial port
+    # Description: Stops the motors and closes the serial port.
     #
     # Parameters:
     #   None
     #
     def close(self):
+        # Stop both sides
         self.stopLeft()
         self.stopRight()
+
+        # Close the serial connection
         self.serialPort.close()
 
 

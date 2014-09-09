@@ -2,7 +2,7 @@ __author__ = 'Matt Holland'
 from src.core.stateMachine.transition import *
 
 
-#TODO: enforce predicate
+#TODO: enforce state requirements (We won't go into transfer state when excavator is still on board the transport)
 class state:
 
     nextStateId = 0
